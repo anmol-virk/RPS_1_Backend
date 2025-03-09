@@ -37,6 +37,21 @@ app.post("/books", async (req, res) => {
   }
 });
 
+app.post("/books/:id", async (req, res) => {
+  const bookId = req.params.id
+  const updatedBookData = req.body
+  try{
+    const updatedbook = await Books.findByIdAndUpdate(bookId, updatedBookData, { new: true })
+    if(!updatedbook){
+      return res.status(404).json({message: "Book not found"})
+    }
+    res.status(200).json(updatedbook)
+  } catch(error){
+    console.error(error)
+    res.status(500).json({message: "Server Error"})
+  }
+})
+
 app.delete("/books/:id", async (req, res) => {
   const bookId = req.params.id;
 
